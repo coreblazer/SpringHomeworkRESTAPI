@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 
 @RestController
 @Component
@@ -40,14 +44,16 @@ public class RestAPIController {
 
     @GetMapping("/sqr")
     @ResponseBody
-    public String getSqr(@RequestParam(name="a") String value1) throws Exception {
+    public Map<String, Integer> getSqr(@RequestParam(name="a") String value1) throws Exception {
         String value = null;
+        Map<String, Integer> squaresList = new HashMap();
         try{
-            Integer ff = Integer.parseInt(value1);
-            value = ff.toString();
+            Integer parsedValue = Integer.parseInt(value1);
+            squaresList.put("sqrt", (int)Math.pow(parsedValue,2));
+            squaresList.put("sqr", (int)Math.sqrt(Double.parseDouble(value1)));
         }catch(Exception e){
             throw new CustomException(CustomException.ErrorCode.PARSE_ERROR);
         }
-        return value;
+        return squaresList;
     }
 }
